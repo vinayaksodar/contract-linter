@@ -1,0 +1,16 @@
+{
+  "name": "contract-linter",
+  "version": "1.0.0",
+  "description": "Eslint but for legal contracts",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
