@@ -1,0 +1,5 @@
+https://github.dev/OfficeDev/Office-Addin-TaskPane-React/blob/master - Official microsoft guide
+https://github.com/vienpt/word-office-js/blob/main/vite.config.mts - Vite setup guide that I partially followed
+
+When deploying once check the build where the taskpane.html files are generated as in viteconfig you have specified rollup input options so they may be in dist
+not dist/taskpane you have to update the urls in manifest or just remove the vite config rollup input
