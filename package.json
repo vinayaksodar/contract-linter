@@ -7,14 +7,24 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "format": "prettier .",
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
+    "axios": "^1.13.2",
+    "compromise": "^14.14.4",
+    "date-fns": "^4.1.0",
+    "fast-xml-parser": "^5.3.2",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "uuid": "^13.0.0",
+    "wink-nlp": "^2.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@types/jest": "^30.0.0",
+    "@types/jsdom": "^27.0.0",
     "@types/node": "^24.10.1",
     "@types/office-js": "^1.0.560",
     "@types/office-runtime": "^1.0.35",
@@ -25,13 +35,17 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "jest": "^30.2.0",
+    "jsdom": "^27.2.0",
     "office-addin-cli": "^2.0.6",
     "office-addin-dev-certs": "^2.0.6",
     "office-js": "^0.1.0",
+    "ts-jest": "^29.4.5",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4",
     "vite-plugin-eslint": "^1.8.1",
-    "vite-plugin-office-addin": "^2.1.0"
+    "vite-plugin-office-addin": "^2.1.0",
+    "vitest": "^4.0.14"
   }
 }

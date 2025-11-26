@@ -1,0 +1,9 @@
+{
+  "name": "Acme Default",
+  "rules": [
+    { "id":"must_gov_law","type":"must_have_clause","clauseName":"Governing Law" },
+    { "id":"forbid_noncompete","type":"forbidden_phrase","phrase":"non-compete" },
+    { "id":"indemnity_preferred","type":"preferred_wording","clause":"Indemnity","text":"The indemnifying party shall be liable only for direct damages." },
+    { "id":"indemnity_semantic","type":"semantic_policy","clause":"Indemnity","policyText":"Indemnity must be mutual and exclude consequential damages" }
+  ]
+}

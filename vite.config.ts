@@ -1,7 +1,6 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import officeAddin from "vite-plugin-office-addin";
-import * as path from "path";
 import devCerts from "office-addin-dev-certs";
 
 async function getHttpsOptions() {
@@ -23,10 +22,7 @@ export default defineConfig(async ({ mode }) => ({
     }),
   ],
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-      // '@/assets': path.resolve(__dirname, '../../../'),
-    },
+    alias: {},
   },
   root: "src",
   build: {
@@ -41,4 +37,10 @@ export default defineConfig(async ({ mode }) => ({
   },
   server:
     mode !== "production" ? { https: await getHttpsOptions(), port: 3000 } : {},
+  test: {
+    globals: true,
+    environment: "jsdom",
+    root: './',
+    dir: './tests',
+  },
 }));
