@@ -106,14 +106,22 @@ function getParagraphText(p: Element): string {
     const rText = runToText(run);
     if (!rText) continue;
 
-    const prevLast = prevRunText.trimEnd().slice(-1) || "";
-    const currFirst = rText.trimStart().slice(0, 1) || "";
+    const prevLast = prevRunText.slice(-1) || "";
+    const currFirst = rText[0] || "";
 
     const isWhitespace = (ch: string) => /\s/.test(ch);
-    const isClosingPunct = (ch: string) => /[.,;:!?')\]\}]/.test(ch);
-    const isOpeningPunct = (ch: string) => /[(\[\{"'“”'‘]/.test(ch);
+    const isClosingPunct = (ch: string) => /[.,;:!?')\]}]/.test(ch);
+    const isOpeningPunct = (ch: string) => /[([{"'“”'‘]/.test(ch);
 
+    // DO NOT add a space if the previous run already ends with a space
+    const prevEndedWithSpace = /\s$/.test(prevRunText);
+
+    // Insert space only if:
+    // - previous run did not end with whitespace
+    // - current run does not start with whitespace
+    // - neither side is punctuation
     if (
+      !prevEndedWithSpace &&
       prevLast &&
       currFirst &&
       !isWhitespace(prevLast) &&
