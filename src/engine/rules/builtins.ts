@@ -80,20 +80,15 @@ export function checkDefinedTerms(
     }
   }
 
-  // Check for undefined terms (simple version)
-  const potentialTerms = allText.match(/\b([A-Z][a-zA-Z]+(\s[A-Z][a-zA-Z]+)*)\b/g) || [];
+  /*
+  // Check for undefined terms (simple version) - DISABLED due to high false positives
+  const lowercasedDefinedTerms = new Set(definedTerms.map(t => t.toLowerCase()));
+  const potentialTerms = allText.match(/\b([A-Z][a-zA-Z]+( [A-Z][a-zA-Z]+)*)\b/g) || [];
   const uniquePotentialTerms = [...new Set(potentialTerms)];
 
   for (const term of uniquePotentialTerms) {
     if (!tree.definedTerms[term] && term.toUpperCase() !== term) { // Exclude acronyms
-        let isDefined = false;
-        for(const defined of definedTerms) {
-            if(defined.toLowerCase() === term.toLowerCase()) {
-                isDefined = true;
-                break;
-            }
-        }
-        if(!isDefined) {
+        if (!lowercasedDefinedTerms.has(term.toLowerCase())) {
             findings.push({
                 rule,
                 message: `Term '${term}' may be used but is not defined.`,
@@ -101,6 +96,7 @@ export function checkDefinedTerms(
         }
     }
   }
+  */
 
   return { findings };
 }
