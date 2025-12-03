@@ -167,7 +167,7 @@ function getNumberingLevel(p: Element): string | null {
 function normalizeTerm(raw: string): string | null {
   console.log("[normalizeTerm] raw =", JSON.stringify(raw));
 
-  let term = raw.replace(/^['"“”'‘\s]+|['"“”'‘\s]+$/g, "").trim();
+  const term = raw.replace(/^['"“”'‘\s]+|['"“”'‘\s]+$/g, "").trim();
   console.log("  stripped =", term);
 
   if (/^\[.*\]$/.test(raw.trim())) {
@@ -202,7 +202,7 @@ function normalizeTerm(raw: string): string | null {
   }
 
   const titleCasePattern =
-    /^([A-Z][a-zA-Z0-9'’\-\&]+)(?:\s+[A-Z][a-zA-Z0-9'’\-\&]+){0,3}$/;
+    /^([A-Z][a-zA-Z0-9'’\-&]+)(?:\s+[A-Z][a-zA-Z0-9'’\-&]+){0,3}$/;
   const acronymPattern = /^[A-Z]{2,}(?:\s+[A-Z]{2,}){0,3}$/;
 
   if (!titleCasePattern.test(term) && !acronymPattern.test(term)) {
@@ -590,7 +590,7 @@ export function extractContract(ooxml: string): ContractTree {
   //                         PARTY EXTRACTION
   // ========================================================================
 
-  const parties = extractParties(paragraphs);
+  const extractedParties = extractParties(paragraphs);
 
   console.log("\n====================================================");
   console.log("                FINAL OUTPUT SUMMARY");
@@ -599,7 +599,7 @@ export function extractContract(ooxml: string): ContractTree {
   console.log("definedTerms:", definedTerms);
   console.log("clauses:", clauses);
   console.log("references:", references);
-  console.log("parties:", parties);
+  console.log("parties:", extractedParties);
 
   return {
     title: "Contract Analysis",
@@ -612,7 +612,7 @@ export function extractContract(ooxml: string): ContractTree {
     ],
     definedTerms,
     references,
-    parties,
+    parties: extractedParties,
     bookmarks: new Set(),
   };
 }
