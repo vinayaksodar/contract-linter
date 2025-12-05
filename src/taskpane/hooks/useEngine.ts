@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { extractContract } from "../../engine/extractor";
 import { runPlaybook } from "../../engine/rules/engine";
-import { getDocumentAsOoxml } from "../wordBridge";
+import { getDocumentBodyOoxml } from "../wordBridge";
 import { getPlaybooks } from "../../engine/storage/playbookStore";
 import type { Finding } from "../../engine/types";
 
@@ -12,7 +12,7 @@ export function useEngine() {
   const runAnalysis = async () => {
     setIsRunning(true);
     try {
-      const ooxml = await getDocumentAsOoxml();
+      const ooxml = await getDocumentBodyOoxml();
       const tree = extractContract(ooxml);
       let playbooks = getPlaybooks();
       if (playbooks.length === 0) {

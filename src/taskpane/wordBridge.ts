@@ -1,8 +1,3 @@
-import {
-  getDocumentAsOoxml,
-  applyRedline,
-  selectClauseInEditor,
-  insertText,
-} from "../../src/engine/officeApi";
+import { getDocumentBodyOoxml } from "../../src/engine/officeApi";
 
-export { getDocumentAsOoxml, applyRedline, selectClauseInEditor, insertText };
+export { getDocumentBodyOoxml };
