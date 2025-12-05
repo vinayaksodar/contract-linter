@@ -1,11 +1,18 @@
 import { AssistantRuntimeProvider, useLocalRuntime } from "@assistant-ui/react";
+import { SimpleTextAttachmentAdapter, CompositeAttachmentAdapter } from "@assistant-ui/react";
 import geminiAdapter from "../engine/llm/geminiAdapter.ts";
 import { AnalysisPanel } from "./components/AnalysisPanel.tsx";
 import { ChatPage } from "./components/ChatPage.tsx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 
 function App() {
-  const runtime = useLocalRuntime(geminiAdapter);
+  const runtime = useLocalRuntime(geminiAdapter, {
+    adapters: {
+      attachments: new CompositeAttachmentAdapter([
+        new SimpleTextAttachmentAdapter(),
+      ]),
+    },
+  });
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
@@ -20,13 +27,17 @@ function App() {
               <TabsTrigger value="chat">Chat</TabsTrigger>
             </TabsList>
             <TabsContent value="analysis">
-              <AnalysisPanel />
+              <>
+                <AnalysisPanel />
+              </>
             </TabsContent>
             <TabsContent
               value="chat"
               className="max-h-[calc(100vh-150px)] overflow-y-auto min-h-[400px]"
             >
-              <ChatPage />
+              <>
+                <ChatPage />
+              </>
             </TabsContent>
           </Tabs>
         </AssistantRuntimeProvider>

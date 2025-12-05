@@ -62,10 +62,25 @@ const geminiAdapter: ChatModelAdapter = {
     });
 
     const lastMessage = messages[messages.length - 1];
-    const prompt = lastMessage.content
+
+    const mainText = lastMessage.content
       .filter((c) => c.type === "text")
       .map((c) => c.text)
       .join("\n");
+
+    const attachmentTexts = (lastMessage.attachments ?? [])
+      .flatMap((attachment) => attachment.content ?? [])
+      .filter((part) => part.type === "text")
+      .map((part) => {
+        const nameMatch = part.text.match(/name="([^"]+)"/);
+        const name = nameMatch ? nameMatch[1] : "attached file";
+        const content = part.text
+          .replace(/<attachment[^>]*>/, "")
+          .replace(/<\/attachment>/, "");
+        return `The user has attached a file named "${name}" with the following content:\n---\n${content}\n---`;
+      });
+
+    const prompt = [mainText, ...attachmentTexts].join("\n\n").trim();
 
     const result = await chat.sendMessageStream(prompt);
 

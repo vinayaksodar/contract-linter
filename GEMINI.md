@@ -118,3 +118,58 @@ npm run lint
 - Relative imports are preffered for internal modules don't use @ anywhere
 - Types should be imported with the type keyword like `import type { Playbook, ContractTree, RuleResult, Finding } from "../types";`.
 - LLM API keys should be stored securely and accessed via the `settingsStore`.
+
+# File Attachment Implementation
+
+To enable text file attachments in the Assistant UI chat, the following changes were made:
+
+1.  **UI Components**: The `assistant-ui` CLI was used to add the necessary attachment components (`npx assistant-ui@latest add attachment`). These components were already integrated into the existing `thread.tsx` file, providing the UI for adding and viewing attachments.
+
+2.  **Runtime Configuration**: The `useLocalRuntime` in `src/taskpane/App.tsx` was configured to use an attachment adapter. This tells the runtime how to process files that are added by the user.
+
+    ```tsx
+    // src/taskpane/App.tsx
+    import { SimpleTextAttachmentAdapter, CompositeAttachmentAdapter } from "@assistant-ui/react";
+
+    // ...
+
+    const runtime = useLocalRuntime(geminiAdapter, {
+      adapters: {
+        attachments: new CompositeAttachmentAdapter([
+          new SimpleTextAttachmentAdapter(),
+        ]),
+      },
+    });
+    ```
+
+3.  **Adapter Modification**: A critical discovery was that `useLocalRuntime` does not merge attachment content into the main message `content` array. Instead, it adds a separate top-level `attachments` array to the `ThreadMessage` object. The `geminiAdapter` was updated to account for this.
+
+    The adapter now explicitly checks for the `attachments` array on the last message, extracts the text content from any attachments found, and combines it with the user's typed prompt. This ensures the content of the attached file is correctly formatted and sent to the language model.
+
+    ```typescript
+    // src/engine/llm/geminiAdapter.ts
+
+    // ...
+    const lastMessage = messages[messages.length - 1];
+
+    const mainText = lastMessage.content
+      .filter((c) => c.type === "text")
+      .map((c) => c.text)
+      .join("\n");
+
+    // Extract text from the separate 'attachments' array
+    const attachmentTexts = (lastMessage.attachments ?? [])
+      .flatMap((attachment) => attachment.content ?? [])
+      .filter((part) => part.type === "text")
+      .map((part) => {
+        // ... formatting logic ...
+        return `The user has attached a file named "${name}" with the following content:\n---\n${content}\n---`;
+      });
+
+    // Combine main prompt with attachment text
+    const prompt = [mainText, ...attachmentTexts].join("\n\n").trim();
+
+    const result = await chat.sendMessageStream(prompt);
+    // ...
+    ```
+This approach ensures that file content is correctly processed on the frontend and sent to the LLM as part of the prompt, all without requiring a backend for file handling.

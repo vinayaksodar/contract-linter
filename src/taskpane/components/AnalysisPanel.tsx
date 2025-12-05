@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useEngine } from "../hooks/useEngine";
-import { FindingsList } from "./FindingsList";
-import { getGeminiApiKey, saveGeminiApiKey } from "../../engine/storage/settingsStore";
+// import { FindingsList } from "./FindingsList";
+import {
+  getGeminiApiKey,
+  saveGeminiApiKey,
+} from "../../engine/storage/settingsStore";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { Label } from "../../components/ui/label";
@@ -31,17 +34,23 @@ export function AnalysisPanel() {
           onChange={(e) => setApiKey(e.target.value)}
           placeholder="Enter your Gemini API key"
         />
-        <Button onClick={handleApiKeySave} className="w-full">Save Key</Button>
+        <Button onClick={handleApiKeySave} className="w-full">
+          Save Key
+        </Button>
       </div>
       <hr className="my-4" />
-      <Button onClick={handleAnalysis} disabled={state.isRunning} className="w-full">
+      <Button
+        onClick={handleAnalysis}
+        disabled={state.isRunning}
+        className="w-full"
+      >
         {state.isRunning ? "Analyzing..." : "Analyze Document"}
       </Button>
       {showFindings && (
         <div className="mt-4">
           <h2 className="text-lg font-semibold">Analysis Complete</h2>
           <p>{state.findings.length} findings found.</p>
-          <FindingsList findings={state.findings} />
+          {/* <FindingsList findings={state.findings} /> */}
         </div>
       )}
     </div>
